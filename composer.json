@@ -1,0 +1,20 @@
+{
+    "name": "vojtechrichter/styx",
+    "description": "Lightweight PHP framework",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Styx\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "VojtechRichter",
+            "email": "vojta3218@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=8.2",
+        "latte/latte": "^3.0"
+    }
+}
