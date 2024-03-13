@@ -2,12 +2,10 @@
 
 namespace Styx\Routing;
 
-use Styx\Http\Method;
-
 final class Dispatcher
 {
     private string $path;
-    private array $params;
+    private array $params = [];
     private string $method;
 
     /** @var array<Route> */
@@ -20,7 +18,10 @@ final class Dispatcher
         $request_resource = parse_url($_SERVER['REQUEST_URI']);
 
         $this->path = $request_resource['path'];
-        $this->params = [];
+        if ($this->path !== '/') {
+            $this->path = rtrim($this->path, '/');
+        }
+
         if (array_key_exists('query', $request_resource)) {
             $this->params = $this->parseRequestParams($request_resource['query']);
         }
@@ -61,9 +62,26 @@ final class Dispatcher
         if ($this->routes === []) {
             throw new \Exception('[STYX_EXCEPTION] No routes found');
         } else {
-            // TODO
-        }
+            foreach ($this->routes as $route) {
+                if (($route->getPath() === $this->path && $route->getMethod() === $this->method) ||
+                    ($route->getPath() === $this->path && $route->getMethod() === 'method::any')) {
+                    $this->invokeControllerAndPassControl($route);
+                }
 
+                // not a matched route
+                switch ($route->getPath()) {
+                    case Route::NOT_FOUND:
+                    {
+                        $this->invokeControllerAndPassControl($route);
+                    } break;
+
+                    default:
+                    {
+
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -73,5 +91,14 @@ final class Dispatcher
     public function registerRoutes(array $routes): void
     {
         $this->routes = $routes;
+    }
+
+    private function invokeControllerAndPassControl(Route $route): void
+    {
+        $class_name = $route->getControllerClassName();
+        $controller = new $class_name();
+        call_user_func_array([$controller, $route->getControllerMethodName()], $this->params);
+
+        exit(0);
     }
 }

@@ -8,12 +8,13 @@ use Styx\Routing\Dispatcher;
 
 class Startup
 {
-    public static function boot(): void
+    public static function boot(Config $config): void
     {
-        Renderer::init();
-
-        $route_dispatcher = new Dispatcher();
         try {
+            Renderer::init();
+
+            $route_dispatcher = new Dispatcher();
+            $route_dispatcher->registerRoutes($config->getRoutes());
             $route_dispatcher->tryMatchRoute();
         } catch(\Exception $e) {
             Logger::error($e);
