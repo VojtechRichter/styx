@@ -19,7 +19,7 @@ class Startup
         } catch(\Exception $e) {
             if ($config->isDebugEnvironment()) {
                 Logger::error($e);
-            } // TODO: else log/report somehow
+            } // TODO: else log/report somehow, show error occurred widget?
         }
     }
 }
