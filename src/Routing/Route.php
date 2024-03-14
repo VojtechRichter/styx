@@ -7,7 +7,7 @@ final class Route
     private string $path;
     private string $controller_class_name;
     private string $controller_method_name;
-    private string $method;
+    private string|array $method;
 
     public const NOT_FOUND = '4xx_not_found';
 
@@ -15,7 +15,7 @@ final class Route
         string $path,
         string $controller_class_name,
         string $controller_method_name,
-        string $method
+        string|array $method
     ) {
         $this->setPath($path);
         $this->setControllerClassName($controller_class_name);
@@ -57,12 +57,12 @@ final class Route
         $this->controller_method_name = $controller_method_name;
     }
 
-    public function getMethod(): string
+    public function getMethod(): string|array
     {
         return $this->method;
     }
 
-    public function setMethod(string $method): void
+    public function setMethod(string|array $method): void
     {
         $this->method = $method;
     }

@@ -17,7 +17,9 @@ class Startup
             $route_dispatcher->registerRoutes($config->getRoutes());
             $route_dispatcher->tryMatchRoute();
         } catch(\Exception $e) {
-            Logger::error($e);
+            if ($config->isDebugEnvironment()) {
+                Logger::error($e);
+            } // TODO: else log/report somehow
         }
     }
 }
