@@ -2,6 +2,8 @@
 
 namespace Styx\Routing;
 
+use JetBrains\PhpStorm\NoReturn;
+
 final class Dispatcher
 {
     private string $path;
@@ -30,25 +32,26 @@ final class Dispatcher
 
     private function parseRequestParams(string $param_string): array
     {
-        $new_params = [];
+        $single_params = [];
+        $key_value_params = [];
         $param_string = trim($param_string);
         if ($param_string !== '&' && $param_string !== '') {
             $raw_params = explode('&', $param_string);
-            if (count($raw_params) > 1) {
+            if (count($raw_params) > 0) {
                 foreach ($raw_params as $param) {
                     $split_kv = explode('=', $param);
                     if (count($split_kv) === 1) {
-                        $new_params[] = $split_kv[0];
+                        $single_params[] = $split_kv[0];
                     } elseif (count($split_kv) === 2) {
-                        $new_params[$split_kv[0]] = $split_kv[1];
+                        $key_value_params[$split_kv[0]] = $split_kv[1];
                     }
                 }
             } else {
-                $new_params = $raw_params;
+                return [];
             }
         }
 
-        return $new_params;
+        return array_merge($single_params, $key_value_params);
     }
 
     /**
@@ -93,11 +96,11 @@ final class Dispatcher
         $this->routes = $routes;
     }
 
-    private function invokeControllerAndPassControl(Route $route): void
+    #[NoReturn] private function invokeControllerAndPassControl(Route $route): void
     {
         $class_name = $route->getControllerClassName();
         $controller = new $class_name();
-        call_user_func_array([$controller, $route->getControllerMethodName()], $this->params);
+        call_user_func_array([$controller, $route->getControllerMethodName()], [$this->params]);
 
         exit(0);
     }

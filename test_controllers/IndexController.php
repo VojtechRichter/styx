@@ -2,9 +2,9 @@
 
 class IndexController
 {
-    public function getContent(): void
+    public function getContent(array $params): void
     {
-        echo 'ahoj';
+        \Styx\Rendering\Renderer::getInstance()->render(__DIR__ . '/../index.latte', $params);
     }
 
     public function notFound(): void
