@@ -3,7 +3,7 @@
     "description": "Lightweight PHP framework",
     "type": "library",
     "license": [
-        "MIT"
+        "proprietary"
     ],
     "autoload": {
         "psr-4": {
