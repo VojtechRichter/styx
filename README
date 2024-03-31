@@ -1,0 +1,37 @@
+# Usage
+## Routing configuration
+```php
+<?php declare(strict_types=1);
+
+require_once(__DIR__ . '/vendor/autoload.php');
+
+require_once __DIR__ . '/test_controllers/SettingsController.php';
+require_once __DIR__ . '/test_controllers/IndexController.php';
+
+$routes = [
+    new \Styx\Routing\Route('/settings/network', \test_controllers\SettingsController::class, 'handleNetworkSettings', 'GET'),
+    new \Styx\Routing\Route('/', IndexController::class, 'getContent', 'GET'),
+    new \Styx\Routing\Route(\Styx\Routing\Route::NOT_FOUND, IndexController::class, 'notFound', 'method::any')
+];
+
+$config = new \Styx\Config($routes, true);
+\Styx\Startup::boot($config);
+```
+
+## Example controller
+```php
+<?php declare(strict_types=1);
+
+class IndexController
+{
+    public function getContent(array $params): void
+    {
+        \Styx\Rendering\Renderer::getInstance()->render(__DIR__ . '/../index.latte', $params);
+    }
+
+    public function notFound(): void
+    {
+        echo '404 not found';
+    }
+}
+```
