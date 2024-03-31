@@ -16,6 +16,7 @@ $routes = [
 
 $config = new \Styx\Config($routes, true);
 \Styx\Startup::boot($config);
+?>
 ```
 
 ## Example controller
@@ -34,4 +35,5 @@ class IndexController
         echo '404 not found';
     }
 }
+?>
 ```

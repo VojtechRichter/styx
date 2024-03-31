@@ -2,6 +2,9 @@
     "name": "vojtechrichter/styx",
     "description": "Lightweight PHP framework",
     "type": "library",
+    "license": [
+        "v1.0.0"
+    ],
     "autoload": {
         "psr-4": {
             "Styx\\": "src/"
