@@ -3,6 +3,7 @@
 namespace Styx\Routing;
 
 use JetBrains\PhpStorm\NoReturn;
+use Styx\Logging\Logger;
 
 final class Dispatcher
 {

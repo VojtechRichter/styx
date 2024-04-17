@@ -15,4 +15,14 @@ final class Logger
     {
         Renderer::getInstance()->render(__DIR__ . '/../Internal/Templates/warning.latte', ['message' => $w]);
     }
+
+    public static function dump(mixed $message)
+    {
+        Renderer::getInstance()->render(__DIR__ . '/../Internal/Templates/dump.latte', ['message' => $message]);
+    }
+
+    public static function prod_error()
+    {
+        Renderer::getInstance()->render(__DIR__ . '/../Internal/Templates/prod_error.latte');
+    }
 }
