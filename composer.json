@@ -20,6 +20,6 @@
         "php": ">=8.2",
         "latte/latte": "^3.0",
         "ext-pgsql": "*",
-        "guzzle/guzzle": "^3.9",
+        "guzzle/guzzle": "^3.9"
     }
 }
