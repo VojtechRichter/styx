@@ -6,3 +6,4 @@ package.json
 package-lock.json
 tailwind.config.js
 /styles/
+config.yaml

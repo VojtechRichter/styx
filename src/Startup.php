@@ -13,13 +13,13 @@ class Startup
     {
         try {
             Renderer::init();
-            PostgresDriver::init($db_config);
+            PostgresDriver::init($db_config); // tady to brat z config souboru
 
             $route_dispatcher = new Dispatcher();
             $route_dispatcher->registerRoutes($config->getRoutes());
             $route_dispatcher->tryMatchRoute();
         } catch(\Exception $e) {
-            if ($config->isDebugEnvironment()) {
+            if ($config->isDebugEnvironment()) { // tohle taky
                 Logger::error($e);
             } else {
                 Logger::prod_error();
