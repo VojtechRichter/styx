@@ -62,6 +62,7 @@ final class Dispatcher
     public function tryMatchRoute(): void
     {
         $this->handleRequest();
+        $route_found = false;
 
         if ($this->routes === []) {
             throw new \Exception('[STYX_EXCEPTION] No routes found');
@@ -69,21 +70,14 @@ final class Dispatcher
             foreach ($this->routes as $route) {
                 if (($route->getPath() === $this->path && $route->getMethod() === $this->method) ||
                     ($route->getPath() === $this->path && $route->getMethod() === 'method::any')) {
+                    $route_found = true;
                     $this->invokeControllerAndPassControl($route);
                 }
+            }
 
-                // not a matched route
-                switch ($route->getPath()) {
-                    case Route::NOT_FOUND:
-                    {
-                        $this->invokeControllerAndPassControl($route);
-                    } break;
-
-                    default:
-                    {
-
-                    }
-                }
+            if (!$route_found) {
+                echo '<pre style="font-size: 2rem; font-weight: bold;">404<br>Not Found</pre>';
+                exit;
             }
         }
     }
