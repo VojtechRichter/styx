@@ -8,3 +8,4 @@ tailwind.config.js
 /styles/
 config.yaml
 TestController.php
+test.latte
