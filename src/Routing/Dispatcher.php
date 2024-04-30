@@ -3,6 +3,7 @@
 namespace Styx\Routing;
 
 use JetBrains\PhpStorm\NoReturn;
+use Styx\DefaultRoutesConfig;
 use Styx\Logging\Logger;
 
 final class Dispatcher
@@ -62,7 +63,7 @@ final class Dispatcher
     public function tryMatchRoute(): void
     {
         $this->handleRequest();
-        $route_found = false;
+        $not_found_route = null;
 
         if ($this->routes === []) {
             throw new \Exception('[STYX_EXCEPTION] No routes found');
@@ -70,14 +71,16 @@ final class Dispatcher
             foreach ($this->routes as $route) {
                 if (($route->getPath() === $this->path && $route->getMethod() === $this->method) ||
                     ($route->getPath() === $this->path && $route->getMethod() === 'method::any')) {
-                    $route_found = true;
                     $this->invokeControllerAndPassControl($route);
+                } else {
+                    if ($route->getPath() === Route::NOT_FOUND) {
+                        $not_found_route = $route;
+                    }
                 }
             }
 
-            if (!$route_found) {
-                echo '<pre style="font-size: 2rem; font-weight: bold;">404<br>Not Found</pre>';
-                exit;
+            if ($not_found_route instanceof Route) {
+                $this->invokeControllerAndPassControl($not_found_route);
             }
         }
     }
