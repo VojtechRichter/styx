@@ -9,17 +9,19 @@ use Styx\Routing\Dispatcher;
 
 class Startup
 {
-    public static function boot(Config $config, \Styx\Database\Config $db_config): void
+    public static function boot(Config $config, \Styx\Database\Config $db_config = null): void
     {
         try {
             Renderer::init();
-            PostgresDriver::init($db_config); // tady to brat z config souboru
+            if ($db_config !== null) {
+                PostgresDriver::init($db_config);
+            }
 
             $route_dispatcher = new Dispatcher();
             $route_dispatcher->registerRoutes($config->getRoutes());
             $route_dispatcher->tryMatchRoute();
         } catch(\Exception $e) {
-            if ($config->isDebugEnvironment()) { // tohle taky
+            if ($config->isDebugEnvironment()) {
                 Logger::error($e);
             } else {
                 Logger::prod_error();
